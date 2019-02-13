@@ -1,0 +1,43 @@
+>start-master.sh #after this spark ui should be accessible 
+
+Open spark UI:
+http://<docker-machine ip>:8080/  
+
+Start individual slave from slave machine:
+start-slave.sh spark://master:7077
+
+start all slaves from master :
+add all hsotname inside $SPARK_HOME/conf/slaves file
+>start-slaves.sh  
+
+Run application on standalone cluster client mode
+spark-submit --master spark://master:7077 --deploy-mode client --class org.apache.spark.examples.SparkPi $SPARK_HOME/examples/jars/spark-examples_2.11-2.4.0.jar
+
+
+Run application on standalone cluster cluster mode
+spark-submit --master spark://master:7077 --deploy-mode cluster  --class org.apache.spark.examples.SparkPi $SPARK_HOME/examples/jars/spark-examples_2.11-2.4.0.jar
+spark-submit --master spark://master:7077 --deploy-mode cluster  --class com.Main /sparkvol/spark-examples-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+yarn:
+spark-submit --master yarn --deploy-mode cluster  --class org.apache.spark.examples.SparkPi $SPARK_HOME/examples/jars/spark-examples_2.11-2.4.0.jar
+spark-submit --master yarn --deploy-mode client  --class org.apache.spark.examples.SparkPi $SPARK_HOME/examples/jars/spark-examples_2.11-2.4.0.jar
+
+spark-submit --master yarn --deploy-mode client count.py
+
+
+
+spark-submit --master spark://master:7077 --deploy-mode client count.py
+
+spark-submit  --master yarn --deploy-mode cluster  spark-examples-1.0-SNAPSHOT.jar
+
+
+hadoop fs -mkdir /user/hdfs/store
+hadoop fs -mkdir /user/hdfs/store/input
+hadoop fs -put /sparkvol/superstore.csv /user/hdfs/store/input
+spark-submit --master spark://master:7077 --deploy-mode client example.py
+hadoop fs -get /sparkvol/superstore.csv /user/hdfs/store/output/part-00000-649f65d1-456a-447e-9819-188dd3ed6641-c000.csv
+
+
+
+
+
